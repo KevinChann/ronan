@@ -1,0 +1,66 @@
+<div class="well">
+  <div class="media">
+    {% for post in posts %}
+      <a class="pull-left" href="{{ url_for('main.profile',account=post.author.account) }}">
+        {% if post.author.avatar %}
+        <img class="img-rounded profile-thumbnail"
+          src="../static/avatar/{{ post.author.avatar }}?{{ dynamic_url }}" 
+          height="60" width="60">
+        {% else %}
+        <img class="img-rounded profile-thumbnail" src="../static/avatar/__default__.jpg" 
+          height="60" width="60">
+        {% endif %}
+      </a>
+      <div class="media-body">
+        <div class="pull-right">{{ moment(post.timestamp).fromNow() }}</div>
+          <h4 class="media-heading">
+            <a href="{{ url_for('main.profile',account=post.author.account) }}">
+              {{ post.author.account }}
+            </a>
+          </h4>
+        <div>{{ post.body }}</div>
+        <br/>
+        <div class="media-object">
+          {% if post.picture %}
+            <a href="{{ url_for('main.view_picture',picture=post.picture) }}" target="view_window">
+              <img class="img-rounded profile-thumbnail" src="../static/picture/{{ post.picture }}" 
+               height="165" width="165">
+            </a>
+            {% endif %}
+        </div>
+        <div class="pull-right">
+            <a href="{{ url_for('main.post_comment',id=post.id) }}">
+              <span class = "label label-primary">{{ post.comments.count() }} 评论</span>
+            </a>
+            {% if current_user == post.author %}
+            <a>
+              <span class="label label-danger" data-toggle="modal" data-target="#del_post">删除</span>
+            </a>
+            <!--modal模拟窗体，用于删除post的时候确认-->
+            <div class="modal fade" id="del_post" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                  <p>你确定要删除这个post吗？</p>
+                </div>
+                <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                  <a href="{{ url_for('main.delete_post',post_id=post.id) }}">
+                    <button class="btn btn-primary" type="button">确定</button>
+                  </a>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+            </div>
+            <!--modal模拟窗体 完！-->
+            {% endif %}
+          </div>
+      </div>
+      <hr/>
+      {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,8 @@
+2018-02-09 23:25:14,332 CRIT Supervisor running as root (no user in config file)
+2018-02-09 23:25:14,335 INFO daemonizing the supervisord process
+2018-02-09 23:25:14,335 INFO supervisord started with pid 13355
+2018-02-09 23:25:15,338 INFO spawned: 'ronan' with pid 13356
+2018-02-09 23:25:25,831 INFO success: ronan entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2018-02-09 23:25:51,658 INFO exited: ronan (exit status 30; not expected)
+2018-02-09 23:25:52,660 INFO spawned: 'ronan' with pid 13376
+2018-02-09 23:26:03,148 INFO success: ronan entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)

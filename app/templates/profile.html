@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}PageProfile{% endblock %}
+
+{% block page_content %}
+<div class="container">
+  <div class="media">
+    <a class="pull-left">
+      <br/><br/>
+      <!-- 判断用户是否有头像-->
+      <!-- 如果有则显示用户头像，没有则显示default-->
+      {% if user.avatar %}
+      <!-- img src加入动态后缀，使浏览器刷新cache，才能更新头像 -->
+      <img class="img-rounded" src="../static/avatar/{{ user.avatar }}?{{ dynamic_url }}" 
+      height="200" width="200">
+      {% else %}
+      <img class="img-rounded" src="../static/avatar/__default__.jpg" 
+      height="200" width="200">
+      {% endif %}
+      <br/>
+    </a>
+    <div class="pull-center">
+      <h2 class="media-heading">&nbsp;&nbsp;&nbsp;{{ user.account }}</h1>
+      <hr />
+      <span class="glyphicon glyphicon-phone">&nbsp;电话：{{ user.phone }}</span>
+      <br />
+      <br />
+      <span class="glyphicon glyphicon-map-marker">&nbsp;居住地：{{ user.address }}</span>
+      <br />
+      <br />
+      <span class="glyphicon glyphicon-envelope">&nbsp;邮箱：{{ user.email }}</span>
+      <br />
+      <br />
+      <span class="glyphicon glyphicon-paperclip">&nbsp;个人域名：{{ user.domain }}</span>
+      <hr />
+    </div>
+    <!-- edit btn只有当前登陆用户才能看见 -->
+    {% if user == current_user %}
+    <a class="btn btn-default" href="{{ url_for('main.edit_profile') }}">
+      编辑资料
+    </a>
+    &nbsp;&nbsp;
+    <a class="btn btn-default" href="{{ url_for('main.change_avatar') }}">
+      修改头像
+    </a>
+    {% endif %}
+  </div>
+    <hr/>
+    <!-- 打印该用户的post -->
+  {% if posts %}
+    {% if current_user.account==user.account %}
+    <h4>我的分享：</h4>
+    {% else %}
+    <h4>{{user.account}}的分享：</h4>
+    {% endif %}
+    {% include '_post.html' %}
+    <!-- 分页导航 -->
+    {% if pagination %}
+    {% import "_macros.html" as macros%}
+    <div class="pagination">
+      {{ macros.pagination_widget(pagination,'main.index') }}
+    </div>
+    {% endif %}
+  {% else %}
+  <div class="well">
+    <h4>暂无分享！</h4>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

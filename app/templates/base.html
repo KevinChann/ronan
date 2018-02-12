@@ -1,0 +1,97 @@
+{% extends "bootstrap/base.html" %}
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ moment.lang("zh-CN") }}
+{% endblock %}
+
+{% block title %}PageTitle{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="containar">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle"
+			data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">Ronan</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="/">主页</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right"> 
+				{% if current_user.is_authenticated %}
+				<!-- 登陆后显示的内容-->
+				<div class="btn-group">
+				    <button type="button" class="btn btn-inverse dropdown-toggle "  data-toggle="dropdown">
+				     {{ current_user.account }}
+				      <span class="caret"></span>         
+				    </button>
+				    <ul class="dropdown-menu" role="menu">
+				      <li>
+				         <a href="{{ url_for('main.profile',account=current_user.account) }}">
+				         	个人资料
+				         </a>            
+				      </li>
+				      <li>
+				      	<a href="/change_password">修改密码</a>
+				      </li>
+				      <li role="presentation">
+				         <a data-toggle="modal" data-target="#modal_logout">注销</a>
+				      </li>
+				    </ul>
+				</div>
+				<!-- 游客显示的内容-->
+				{% else %}
+            	<li><a href="/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li> 
+            	<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> 
+            	{% endif %}
+        	</ul>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_logout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">提示</h4>
+          </div>
+          <div class="modal-body">
+            <p>你确定要注销账号吗？</p>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <a href="/logout"><button class="btn btn-primary" type="button">确定</button></a>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+</div>
+
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<!-- 限制导航条置顶 挡内容的bug -->
+<!-- 导航条默认50px 这里设置了60px -->
+<div class="containar" style="padding-top: 60px;">
+	{% for message in get_flashed_messages() %}
+	<div class="alert alert-warning">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		{{ message }}
+	</div>
+	{% endfor %}
+
+	{% block page_content %}{% endblock %}	<!--新定义的block：page_content -->
+</div>
+{% endblock %}

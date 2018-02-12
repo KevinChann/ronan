@@ -1,0 +1,58 @@
+<div class="well">
+  <ul class="media-list">
+    {% for comment in comments %}
+    <li class="media">
+      <a class="pull-left" href="{{ url_for('main.profile',account=comment.author.account) }}">
+          <!-- 判断用户有无头像，无则用默认 -->
+          {% if comment.author.avatar %}
+          <img class="img-rounded profile-thumbnail"
+            src="../static/avatar/{{ comment.author.avatar }}?{{ dynamic_url }}" 
+            height="50" width="50">
+          {% else %}
+          <img class="img-rounded profile-thumbnail" src="../static/avatar/__default__.jpg" 
+            height="50" width="50">
+          {% endif %}
+      </a>
+      <div class="media-body">
+        <div class="pull-right">{{ moment(comment.timestamp).fromNow() }}</div>
+          <h4 class="media-heading">
+            <a href="{{ url_for('main.profile',account=comment.author.account) }}">
+            {{ comment.author.account }}
+            </a>
+          </h4>
+        <div>{{ comment.body }}</div>
+        <br/>
+        <div class="pull-right">
+            {% if current_user == comment.post.author or current_user == comment.author %}
+            <a>
+              <span class="label label-danger" data-toggle="modal" data-target="#del_comment">删除</span>
+            </a>
+            <!--modal模拟窗体，用于删除post的时候确认-->
+            <div class="modal fade" id="del_comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                  <p>你确定要删除该评论吗？</p>
+                </div>
+                <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                  <a href="{{ url_for('main.delete_comment',comment_id=comment.id) }}">
+                    <button class="btn btn-primary" type="button">确定</button>
+                  </a>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+            </div>
+            <!--modal模拟窗体 完！-->
+            {% endif %}
+          </div>
+      </div>
+      
+      {% endfor %}
+    </li>
+  </ul>
+</div>

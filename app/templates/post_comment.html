@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}PagePostComments{% endblock %}
+
+{% block page_content %}
+<div class="container">
+	{% include '_post.html' %}
+
+	<hr/>
+	<h4 id="comments">评论</h4>
+
+	<div class="comment-form">
+	    {{ wtf.quick_form(form) }}
+	</div>
+	<hr/>
+	{% include '_comments.html' %}
+	{% if pagination %}
+	<div class="pagination">
+		<!-- fragment='#comments', -->
+	    {{ macros.pagination_widget(pagination, 'main.post_comment',  id=posts[0].id) }}
+	</div>
+	{% endif %}
+</div>
+{% endblock %}
