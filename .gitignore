@@ -1,0 +1,22 @@
+# conf
+uwsgi.ini
+*.log
+*.pid
+
+# Virtual environment
+venv
+
+# Packages
+build
+egg
+bin
+var
+lib
+lib64
+__pycache__
+
+# Avatar
+avatar
+
+# Picture
+picture
